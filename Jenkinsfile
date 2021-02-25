@@ -4,17 +4,54 @@ pipeline {
     stages {
         stage('Builds the C# code') {
             steps {
-                echo 'Building C sharp code..'
+                sh 'dotnet build'
+                echo 'Building .Net..'
             }
         }
-        stage('Test') {
+        stage('Runs the C# tests.') {
             steps {
-                echo 'Testing..'
+                sh 'dotnet test'
+                echo 'Running C# Tests...'
             }
         }
-        stage('Deploy') {
+        stage('Install node packages.') {
             steps {
-                echo 'Deploying....'
+                dir("./DotnetTemplate.Web") {
+                    sh 'npm install'
+                }
+                echo 'Installing node packages...'
+            }
+        }
+        stage('build node packages') {
+            steps {
+                dir("./DotnetTemplate.Web") {
+                    sh 'npm run build'
+                }
+                echo 'Building node packages...'
+            }
+        }
+        stage('Runs the C# tests.') {
+            steps {
+                dir("./DotnetTemplate.Web.Tests") {
+                    sh 'dotnet test'
+                }
+                echo 'Running .Net Tests...'
+            }
+        }
+        stage('typescript tests.') {
+            steps {
+                dir("./DotnetTemplate.Web/Scripts/spec") {
+                    sh 'npm t'
+                }
+                echo 'Running typescript tests...'
+            }
+        }
+        stage('Runs the C# tests.') {
+            steps {
+                dir("./DotnetTemplate.Web") {
+                    sh 'npm run lint'
+                }
+                echo 'Running linting on the typescript code...'
             }
         }
     }
