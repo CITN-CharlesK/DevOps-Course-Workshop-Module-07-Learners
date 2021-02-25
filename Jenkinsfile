@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Builds the C# code') {
+        stage('Builds the .Net') {
             steps {
                 sh 'dotnet build'
                 echo 'Building .Net..'
