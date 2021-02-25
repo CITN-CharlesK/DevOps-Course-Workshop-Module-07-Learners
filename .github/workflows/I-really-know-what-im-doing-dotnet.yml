@@ -1,0 +1,47 @@
+name: Continuous Integration
+on: [push]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - uses: actions/setup-dotnet@v1
+      name: Install .net
+      with: 
+        dotnet-version: '3.1.x'
+       
+    - run: dotnet build
+      name: Build .net
+          
+    - run: dotnet test
+      name: Run C sharp tests
+      
+    - uses: actions/setup-node@v2
+      name: Install node
+      with:
+        node-version: '14'
+        
+    - run: npm install
+      name: install node packages
+      working-directory: ./DotnetTemplate.Web
+      
+    - run: npm run build
+      name: build node packages
+      working-directory: ./DotnetTemplate.Web
+      
+    - run: dotnet test
+      name: test dotnet
+      working-directory: ./DotnetTemplate.Web.Tests
+      
+    - run: npm t
+      name: typescript tests
+      working-directory: ./DotnetTemplate.Web/Scripts/spec
+      
+    - run: npm run lint
+      name: run linting on the typescript code
+      working-directory: ./DotnetTemplate.Web
+      
+      
