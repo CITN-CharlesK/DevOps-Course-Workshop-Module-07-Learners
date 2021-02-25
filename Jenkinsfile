@@ -30,7 +30,7 @@ pipeline {
                 echo 'Building node packages...'
             }
         }
-        stage('Runs the C# tests.') {
+        stage('Running .Net Tests..') {
             steps {
                 dir("./DotnetTemplate.Web.Tests") {
                     sh 'dotnet test'
@@ -46,7 +46,7 @@ pipeline {
                 echo 'Running typescript tests...'
             }
         }
-        stage('Runs the C# tests.') {
+        stage('Running linting on the typescript code') {
             steps {
                 dir("./DotnetTemplate.Web") {
                     sh 'npm run lint'
